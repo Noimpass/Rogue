@@ -2,10 +2,14 @@
 
 
 use bevy::prelude::*;
+use bevy_sprite3d::*;
+use bevy_asset_loader::prelude::*;
 use crate::components::{Player, Velocity};
-use crate::{BASE_SPEED, TIME_STEP};
-
+use crate::{BASE_SPEED, TIME_STEP, WinSize, ImageAssets};
+use bevy_sprite3d::Sprite3dParams;
+use bevy_sprite3d::Sprite3d;
 pub struct PlayerPlugin;
+
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
@@ -17,23 +21,24 @@ impl Plugin for PlayerPlugin {
 
 fn player_spawn_system(
     mut commands: Commands,
-    asset_server: Res<AssetServer>,
+    image_assets: Res<AssetServer>,
+    mut sprite_params: Sprite3dParams,
+    //win_size: Res<WinSize>,
 ) {
-    commands.spawn(SpriteBundle {
-        texture: asset_server.load("Character_animation/priests_idle/priest1/v2/priest1_v2_1.png"),
-        transform: Transform {
-            scale: Vec3::new(5., 5., 1.),
-            ..default()
-        },
+    commands.spawn(Sprite3d {
+        image: image_assets.player_sprite.clone(),
 
-        //sprite: Sprite {
-        //    custom_size: Some(Vec2::new(60.0, 100.0)),
-        //    ..default()
-        //},
+        pixels_per_metre: 400.,
+
+        alpha_mode: AlphaMode::Blend,
+
+        unlit: true,
+
+        // transform: Transform::from_xyz(0., 0., 0.),
+        // pivot: Some(Vec2::new(0.5, 0.5)),
+
         ..default()
-    })
-        .insert(Player)
-        .insert(Velocity {x: 0.0, y: 0.0 } );
+    }.bundle(&mut sprite_params));
 }
 
 fn player_movement_system(

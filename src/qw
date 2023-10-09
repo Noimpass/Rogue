@@ -1,0 +1,15 @@
+commands.spawn(SpriteBundle {
+        texture: asset_server.load("Character_animation/priests_idle/priest1/v1/priest1_v1_1.png"),
+        transform: Transform {
+            scale: Vec3::new(5., 5., 1.),
+            ..default()
+        },
+
+        //sprite: Sprite {
+        //    custom_size: Some(Vec2::new(60.0, 100.0)),
+        //    ..default()
+        //},
+        ..default()
+    })
+        .insert(Player)
+        .insert(Velocity {x: 0.0, y: 0.0 } );
